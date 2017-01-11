@@ -2,6 +2,8 @@
  * Created by harshakakumanu on 2017-01-09.
  */
 import React, {PropTypes} from 'react';
+import {connect}  from 'react-redux';
+import * as courseActions from '../../actions/courseActions';
 
 class CoursesPage extends React.Component {
   constructor(props,context){
@@ -23,13 +25,18 @@ class CoursesPage extends React.Component {
   }
 
   onClickSave(){
-  alert('cool')
+    this.props.dispatch(courseActions.createCourse(this.state.course));
+  }
+
+  courseRow(course,index){
+  return <div key={index}>{course.title}</div>;
   }
 
   render(){
     return(
       <div>
         <h1>Courses</h1>
+        {this.props.courses.map(this.courseRow)}
         <h2>Add course</h2>
         <input type="text" onChange={this.onTitleChange} value={this.state.course.title}/>
         <input type="submit" onClick={this.onClickSave} value="Save"/>
@@ -38,5 +45,18 @@ class CoursesPage extends React.Component {
   }
 }
 
-export default CoursesPage;
+CoursesPage.propTypes = {
+  dispatch:PropTypes.func.isRequired,
+  courses:PropTypes.array.isRequired
+
+};
+
+function mapStateToProps(state,ownProps){
+  return {
+    courses:state.courses
+  };
+}
+
+export default connect(mapStateToProps)(CoursesPage);
+
 
