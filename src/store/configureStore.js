@@ -1,15 +1,16 @@
 /**
  * Created by harshakakumanu on 2017-01-10.
  */
-import {createStore} from 'redux';
+import {createStore,applyMiddleware,compose} from 'redux';
 import rootReducer from '../reducers';
 import reduxImmutableStateVariant from 'redux-immutable-state-invariant';
-
+import thunk from 'redux-thunk';
 
 export default  function configureStore(initialState) {
 
   return createStore(
     rootReducer,
-    initialState
+    initialState,
+    applyMiddleware(thunk,reduxImmutableStateVariant())
   );
 }
